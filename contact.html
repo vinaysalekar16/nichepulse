@@ -6,42 +6,39 @@
   <title>Contact Us – NichePulse</title>
   <meta name="description" content="Get in touch with NichePulse. We'd love to hear from you."/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="css/style.css"/>
   <style>
-    .contact-wrap { max-width: 640px; margin: 0 auto; padding: 4rem 2rem; }
-    .contact-wrap h1 { font-family: var(--font-head); font-size: 2.4rem; margin-bottom: 0.75rem; }
-    .contact-wrap p { color: #ccc8c0; line-height: 1.85; margin-bottom: 1.5rem; }
-    .contact-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; margin-top: 2rem; }
-    .contact-card h2 { font-family: var(--font-head); font-size: 1.1rem; margin-bottom: 1.2rem; }
-    .contact-row { display: flex; align-items: center; gap: 1rem; padding: 0.9rem 0; border-bottom: 1px solid var(--border); }
-    .contact-row:last-child { border: none; }
-    .contact-icon { font-size: 1.4rem; flex-shrink: 0; }
-    .contact-label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
-    .contact-value { font-size: 0.95rem; color: var(--text); }
-    .contact-value a { color: var(--accent); }
+    .contact-wrap{max-width:640px;margin:0 auto;padding:4rem 2rem}
+    .contact-wrap h1{font-family:var(--font-head);font-size:2.4rem;margin-bottom:.75rem}
+    .contact-wrap>p{color:#ccc8c0;line-height:1.85;margin-bottom:1.5rem}
+    .contact-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:2rem;margin-top:2rem}
+    .contact-card h2{font-family:var(--font-head);font-size:1.1rem;margin-bottom:1.2rem}
+    .contact-row{display:flex;align-items:center;gap:1rem;padding:.9rem 0;border-bottom:1px solid var(--border)}
+    .contact-row:last-child{border:none}
+    .contact-icon{font-size:1.4rem;flex-shrink:0}
+    .contact-label{font-size:.75rem;color:var(--muted);text-transform:uppercase;letter-spacing:.08em}
+    .contact-value{font-size:.95rem;color:var(--text)}
+    .contact-value a{color:var(--accent)}
+    .note{margin-top:2rem;font-size:.88rem;color:var(--muted)}
   </style>
 </head>
 <body>
-
   <header class="header">
     <div class="header-inner">
-      <a href="index.html" class="logo">
-        <span class="logo-mark">◈</span>
-        <span class="logo-text">NichePulse</span>
-      </a>
-      <nav class="nav">
+      <a href="index.html" class="logo"><span class="logo-mark">◈</span><span class="logo-text">NichePulse</span></a>
+      <nav class="nav" id="nav">
         <a href="index.html" class="nav-link">Home</a>
-        <a href="index.html#niches" class="nav-link">Niches</a>
-        <a href="index.html#latest" class="nav-link">Articles</a>
+        <a href="about.html" class="nav-link">About</a>
+        <a href="contact.html" class="nav-link active">Contact</a>
       </nav>
+      <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
     </div>
   </header>
 
   <div class="contact-wrap">
     <h1>Contact Us</h1>
-    <p>Have a question, suggestion, or want to contribute an article? We'd love to hear from you. Reach out using the details below.</p>
-
+    <p>Have a question, suggestion, or want to contribute an article? Reach out using the details below.</p>
     <div class="contact-card">
       <h2>Get in Touch</h2>
       <div class="contact-row">
@@ -66,10 +63,7 @@
         </div>
       </div>
     </div>
-
-    <p style="margin-top:2rem;font-size:0.88rem;color:var(--muted)">
-      <strong style="color:var(--text)">Note:</strong> We do not provide personalized legal, financial, or medical advice. For professional guidance, please consult a qualified expert in the relevant field.
-    </p>
+    <p class="note"><strong style="color:var(--text)">Note:</strong> We do not provide personalized legal, financial, or medical advice. Please consult a qualified professional for such matters.</p>
   </div>
 
   <footer class="footer">
@@ -79,6 +73,9 @@
       </div>
     </div>
   </footer>
-  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    document.getElementById('hamburger').addEventListener('click', () => document.getElementById('nav').classList.toggle('open'));
+  </script>
 </body>
 </html>
