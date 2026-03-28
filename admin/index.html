@@ -1,0 +1,542 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Admin Panel – NichePulse</title>
+  <meta name="robots" content="noindex, nofollow"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="../css/style.css"/>
+  <style>
+    body{background:#080809}
+    .admin-wrap{display:grid;grid-template-columns:240px 1fr;min-height:100vh}
+    @media(max-width:900px){.admin-wrap{grid-template-columns:1fr}.adm-sidebar{display:none}}
+    .adm-sidebar{background:#0d0d0f;border-right:1px solid var(--border);padding:2rem 1.2rem;position:sticky;top:0;height:100vh;overflow-y:auto}
+    .sb-logo{display:flex;align-items:center;gap:.6rem;margin-bottom:2rem;padding-left:.5rem}
+    .sb-label{font-size:.68rem;letter-spacing:.12em;text-transform:uppercase;color:#444;padding:0 .5rem;margin-bottom:.4rem;margin-top:1.5rem}
+    .sb-btn{width:100%;text-align:left;padding:.65rem .85rem;border-radius:6px;border:none;background:transparent;color:var(--muted);font-size:.88rem;cursor:pointer;font-family:var(--font-body);transition:all .15s;display:flex;align-items:center;gap:.6rem}
+    .sb-btn:hover{background:var(--border);color:var(--text)}
+    .sb-btn.active{background:rgba(240,165,0,.12);color:var(--accent)}
+    .sb-link{display:block;padding:.55rem .85rem;border-radius:6px;font-size:.85rem;color:var(--muted);transition:all .15s}
+    .sb-link:hover{color:var(--accent);background:rgba(240,165,0,.06)}
+    .adm-main{padding:2.5rem;overflow-y:auto}
+    .adm-topbar{display:flex;align-items:center;justify-content:space-between;margin-bottom:2rem;flex-wrap:wrap;gap:1rem}
+    .adm-title{font-family:var(--font-head);font-size:1.6rem;font-weight:700}
+    .adm-sub{color:var(--muted);font-size:.88rem}
+    .view{display:none}
+    .view.active{display:block}
+    .stats-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(160px,1fr));gap:1rem;margin-bottom:2.5rem}
+    .stat-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.4rem}
+    .stat-val{font-family:var(--font-head);font-size:2.2rem;font-weight:900;color:var(--accent)}
+    .stat-lbl{font-size:.8rem;color:var(--muted);margin-top:.25rem}
+    .blog-table{width:100%;border-collapse:collapse}
+    .blog-table th{text-align:left;font-size:.72rem;letter-spacing:.1em;text-transform:uppercase;color:var(--muted);padding:.75rem 1rem;border-bottom:1px solid var(--border)}
+    .blog-table td{padding:.9rem 1rem;border-bottom:1px solid var(--border);font-size:.88rem;vertical-align:middle}
+    .blog-table tr:hover td{background:rgba(255,255,255,.02)}
+    .blog-table img{width:60px;height:44px;object-fit:cover;border-radius:4px}
+    .t-title{max-width:260px}
+    .t-title strong{display:block;line-height:1.35;margin-bottom:.2rem}
+    .t-title span{font-size:.75rem;color:var(--muted)}
+    .actions{display:flex;gap:.5rem}
+    .form-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:2rem}
+    .form-grid{display:grid;grid-template-columns:1fr 1fr;gap:1.2rem}
+    @media(max-width:700px){.form-grid{grid-template-columns:1fr}}
+    .form-group{display:flex;flex-direction:column;gap:.4rem}
+    .form-group.full{grid-column:1/-1}
+    label{font-size:.8rem;font-weight:500;color:var(--muted)}
+    input,select,textarea{background:var(--bg);border:1px solid var(--border);border-radius:6px;color:var(--text);padding:.65rem .9rem;font-family:var(--font-body);font-size:.9rem;width:100%;transition:border-color .2s}
+    input:focus,select:focus,textarea:focus{outline:none;border-color:var(--accent)}
+    textarea{resize:vertical;min-height:140px}
+    .char-hint{font-size:.72rem;color:var(--muted)}
+    .editor-bar{display:flex;flex-wrap:wrap;gap:.4rem;padding:.6rem;background:var(--bg2);border:1px solid var(--border);border-bottom:none;border-radius:6px 6px 0 0}
+    .editor-bar button{padding:.3rem .65rem;border-radius:4px;border:none;background:transparent;color:var(--muted);cursor:pointer;font-size:.82rem;font-family:var(--font-body);transition:all .15s}
+    .editor-bar button:hover{background:var(--border);color:var(--text)}
+    #content-editor{border-radius:0 0 6px 6px;min-height:300px;font-size:.85rem;line-height:1.6}
+    .preview-panel{background:var(--bg2);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem;margin-top:1.5rem}
+    .preview-panel h4{font-size:.78rem;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin-bottom:1rem}
+    .preview-body h2{font-family:var(--font-head);font-size:1.25rem;margin:1.5rem 0 .5rem}
+    .preview-body p{font-size:.9rem;color:#ccc8c0;margin-bottom:1rem;line-height:1.8}
+    #toast{position:fixed;bottom:2rem;right:2rem;z-index:9999;background:var(--success);color:#fff;padding:.9rem 1.5rem;border-radius:8px;font-weight:600;font-size:.9rem;opacity:0;transform:translateY(10px);transition:all .3s;pointer-events:none}
+    #toast.show{opacity:1;transform:translateY(0)}
+    .badge{font-size:.7rem;padding:.2rem .6rem;border-radius:50px;font-weight:600}
+    .b-finance{background:rgba(26,107,60,.2);color:#3dba7a}
+    .b-health{background:rgba(192,57,43,.2);color:#e05252}
+    .b-legal{background:rgba(44,62,122,.2);color:#4a9eff}
+    .b-technology{background:rgba(108,52,131,.2);color:#b07fe0}
+    .b-realestate{background:rgba(147,81,22,.2);color:#e09500}
+    .overlay{position:fixed;inset:0;background:rgba(0,0,0,.7);z-index:9000;display:none;align-items:center;justify-content:center}
+    .overlay.show{display:flex}
+    .dialog{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:2rem;max-width:400px;width:90%}
+    .dialog h3{font-family:var(--font-head);margin-bottom:.75rem}
+    .dialog p{color:var(--muted);font-size:.9rem;margin-bottom:1.5rem}
+    .dialog-actions{display:flex;gap:.75rem;justify-content:flex-end}
+    .img-preview{width:100%;height:160px;object-fit:cover;border-radius:6px;margin-top:.5rem;display:none}
+    .recent-item{display:flex;align-items:center;gap:1rem;padding:.9rem 0;border-bottom:1px solid var(--border)}
+    .recent-item img{width:56px;height:42px;object-fit:cover;border-radius:4px;flex-shrink:0}
+    .recent-item-info{flex:1;min-width:0}
+    .recent-item-title{font-weight:500;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .recent-item-meta{font-size:.78rem;color:var(--muted)}
+    .recent-item-actions{display:flex;gap:.5rem;flex-shrink:0}
+    .niches-cards{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem}
+    .niche-manage-card{background:var(--card);border:1px solid var(--border);border-radius:var(--radius);padding:1.5rem}
+    .niche-manage-header{display:flex;align-items:center;gap:1rem;margin-bottom:.75rem}
+    .niche-manage-icon{font-size:2rem}
+    .niche-manage-name{font-family:var(--font-head);font-size:1rem;font-weight:700}
+    .niche-manage-count{font-size:.78rem;color:var(--accent)}
+    .niche-manage-desc{font-size:.84rem;color:var(--muted);margin-bottom:1rem}
+  </style>
+</head>
+<body>
+<div class="admin-wrap">
+
+  <!-- SIDEBAR -->
+  <aside class="adm-sidebar">
+    <div class="sb-logo">
+      <span class="logo-mark">◈</span>
+      <span class="logo-text">NichePulse</span>
+    </div>
+    <div class="sb-label">Manage</div>
+    <button class="sb-btn active" onclick="showView('dashboard')" id="nav-dashboard">📊 Dashboard</button>
+    <button class="sb-btn" onclick="showView('blogs')" id="nav-blogs">📝 All Blogs</button>
+    <button class="sb-btn" onclick="showView('new')" id="nav-new">➕ New Blog</button>
+    <button class="sb-btn" onclick="showView('niches')" id="nav-niches">🏷️ Niches</button>
+    <button class="sb-btn" onclick="showView('settings')" id="nav-settings">⚙️ Settings</button>
+    <div class="sb-label" style="margin-top:2rem">Quick Links</div>
+    <a href="../index.html" class="sb-link" target="_blank">🌐 View Site ↗</a>
+    <a href="../blog.html" class="sb-link" target="_blank">📰 Blog Page ↗</a>
+  </aside>
+
+  <!-- MAIN -->
+  <main class="adm-main">
+
+    <!-- DASHBOARD -->
+    <div class="view active" id="view-dashboard">
+      <div class="adm-topbar">
+        <div><div class="adm-title">Dashboard</div><div class="adm-sub">Welcome back to NichePulse admin</div></div>
+        <button class="btn btn-accent" onclick="showView('new')">➕ New Blog</button>
+      </div>
+      <div class="stats-grid" id="stats-grid"></div>
+      <h3 style="font-family:var(--font-head);margin-bottom:1rem">Recent Articles</h3>
+      <div id="recent-list"></div>
+    </div>
+
+    <!-- ALL BLOGS -->
+    <div class="view" id="view-blogs">
+      <div class="adm-topbar">
+        <div><div class="adm-title">All Blogs</div><div class="adm-sub" id="blogs-count"></div></div>
+        <button class="btn btn-accent" onclick="showView('new')">➕ New Blog</button>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="blog-table">
+          <thead><tr><th>Image</th><th>Title</th><th>Niche</th><th>Date</th><th>Actions</th></tr></thead>
+          <tbody id="blogs-tbody"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- NEW / EDIT BLOG -->
+    <div class="view" id="view-new">
+      <div class="adm-topbar">
+        <div><div class="adm-title" id="form-heading">New Blog Post</div><div class="adm-sub">Fill all fields for best SEO results</div></div>
+        <div style="display:flex;gap:.75rem">
+          <button class="btn btn-ghost" onclick="showView('blogs')">Cancel</button>
+          <button class="btn btn-accent" onclick="saveBlog()">💾 Save Blog</button>
+        </div>
+      </div>
+      <div class="form-card">
+        <input type="hidden" id="edit-id"/>
+        <div class="form-grid">
+          <div class="form-group">
+            <label>Blog Title *</label>
+            <input type="text" id="f-title" placeholder="How to Build an Emergency Fund in 6 Months" oninput="autoSlug()"/>
+          </div>
+          <div class="form-group">
+            <label>Niche *</label>
+            <select id="f-niche"><option value="">— Select Niche —</option></select>
+          </div>
+          <div class="form-group">
+            <label>URL Slug (auto-filled)</label>
+            <input type="text" id="f-slug" placeholder="how-to-build-emergency-fund"/>
+          </div>
+          <div class="form-group">
+            <label>Author</label>
+            <input type="text" id="f-author" value="Admin"/>
+          </div>
+          <div class="form-group">
+            <label>Publish Date</label>
+            <input type="date" id="f-date"/>
+          </div>
+          <div class="form-group">
+            <label>Read Time</label>
+            <input type="text" id="f-readtime" placeholder="6 min"/>
+          </div>
+          <div class="form-group full">
+            <label>Meta Description * <span class="char-hint" id="meta-chars">0 / 155</span></label>
+            <textarea id="f-meta" rows="2" maxlength="155" placeholder="Write a compelling 1-sentence summary. Max 155 characters. This shows in Google search results." oninput="document.getElementById('meta-chars').textContent=this.value.length+' / 155'"></textarea>
+          </div>
+          <div class="form-group full">
+            <label>Featured Image URL *</label>
+            <input type="url" id="f-image" placeholder="https://images.unsplash.com/photo-...?w=800&q=80" oninput="previewImg()"/>
+            <p style="font-size:.75rem;color:var(--muted);margin-top:.3rem">💡 Free images: <a href="https://unsplash.com" target="_blank" style="color:var(--accent)">unsplash.com</a> → right-click image → Copy image address</p>
+            <img id="img-preview" class="img-preview" alt="Preview"/>
+          </div>
+          <div class="form-group full">
+            <label>Tags (comma separated)</label>
+            <input type="text" id="f-tags" placeholder="emergency fund, saving money, budgeting"/>
+          </div>
+          <div class="form-group full">
+            <label>Blog Content (HTML) *</label>
+            <div class="editor-bar">
+              <button onclick="wrap('h2')">H2</button>
+              <button onclick="wrap('p')">¶ Para</button>
+              <button onclick="wrap('strong')"><b>Bold</b></button>
+              <button onclick="wrap('em')"><i>Italic</i></button>
+              <button onclick="insertSnippet('&lt;ul&gt;\n&lt;li&gt;Item&lt;/li&gt;\n&lt;/ul&gt;')">• List</button>
+              <button onclick="insertSnippet('&lt;li&gt;Item&lt;/li&gt;')">→ Item</button>
+              <button onclick="togglePreview()">👁 Preview</button>
+              <button onclick="if(confirm('Clear content?'))document.getElementById('content-editor').value=''">🗑 Clear</button>
+            </div>
+            <textarea id="content-editor" placeholder="<h2>First Section</h2>&#10;<p>Your paragraph here...</p>&#10;<h2>Second Section</h2>&#10;<p>More content...</p>" oninput="updatePreview()"></textarea>
+          </div>
+        </div>
+        <div class="preview-panel" id="preview-panel" style="display:none">
+          <h4>Live Preview</h4>
+          <div class="preview-body" id="preview-body"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- NICHES -->
+    <div class="view" id="view-niches">
+      <div class="adm-topbar">
+        <div><div class="adm-title">Niches</div><div class="adm-sub">Your content categories</div></div>
+      </div>
+      <div class="niches-cards" id="niches-cards"></div>
+    </div>
+
+    <!-- SETTINGS -->
+    <div class="view" id="view-settings">
+      <div class="adm-topbar">
+        <div><div class="adm-title">Settings</div><div class="adm-sub">Update your AdSense ID and site info</div></div>
+        <button class="btn btn-accent" onclick="saveSettings()">💾 Save Settings</button>
+      </div>
+      <div class="form-card">
+        <div class="form-grid">
+          <div class="form-group full">
+            <label>Site Name</label>
+            <input type="text" id="s-name"/>
+          </div>
+          <div class="form-group full">
+            <label>Tagline</label>
+            <input type="text" id="s-tagline"/>
+          </div>
+          <div class="form-group full">
+            <label>Google AdSense Publisher ID</label>
+            <input type="text" id="s-adsense" placeholder="ca-pub-XXXXXXXXXXXXXXXX"/>
+            <p style="font-size:.78rem;color:var(--muted);margin-top:.4rem">⚠️ After entering your AdSense ID, also update the script tag in index.html, blog.html, and niche.html to activate real ads.</p>
+          </div>
+          <div class="form-group full">
+            <label>Contact Email</label>
+            <input type="email" id="s-email"/>
+          </div>
+        </div>
+        <div style="margin-top:2rem;padding-top:1.5rem;border-top:1px solid var(--border)">
+          <h3 style="font-family:var(--font-head);margin-bottom:1rem;color:var(--danger)">Danger Zone</h3>
+          <button class="btn btn-danger" onclick="confirmReset()">🗑 Reset All Data</button>
+        </div>
+      </div>
+    </div>
+
+  </main>
+</div>
+
+<!-- Toast -->
+<div id="toast"></div>
+
+<!-- Confirm Dialog -->
+<div class="overlay" id="confirm-overlay">
+  <div class="dialog">
+    <h3 id="dialog-title">Are you sure?</h3>
+    <p id="dialog-msg">This cannot be undone.</p>
+    <div class="dialog-actions">
+      <button class="btn btn-ghost" onclick="closeDialog()">Cancel</button>
+      <button class="btn btn-danger" id="dialog-confirm-btn">Confirm</button>
+    </div>
+  </div>
+</div>
+
+<script src="../js/db.js"></script>
+<script>
+let editingId = null;
+
+function getDB(){ return JSON.parse(localStorage.getItem('nichepulse_db')); }
+function saveDB(db){ localStorage.setItem('nichepulse_db', JSON.stringify(db)); }
+
+function init(){
+  renderDashboard();
+  renderBlogsTable();
+  renderNichesView();
+  loadSettings();
+  populateNicheSelect();
+  document.getElementById('f-date').value = new Date().toISOString().split('T')[0];
+}
+
+function showView(name){
+  document.querySelectorAll('.view').forEach(v => v.classList.remove('active'));
+  document.querySelectorAll('.sb-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('view-'+name).classList.add('active');
+  const navBtn = document.getElementById('nav-'+name);
+  if(navBtn) navBtn.classList.add('active');
+  if(name === 'new' && !editingId) resetForm();
+}
+
+function renderDashboard(){
+  const db = getDB();
+  const stats = [
+    {val: db.blogs.length, lbl:'Total Articles'},
+    {val: db.niches.length, lbl:'Niches'},
+    {val: db.niches.filter(n=>db.blogs.some(b=>b.niche===n.id)).length, lbl:'Active Niches'},
+    {val: db.blogs.length > 0 ? db.blogs[db.blogs.length-1].date : '—', lbl:'Last Published'}
+  ];
+  document.getElementById('stats-grid').innerHTML = stats.map(s=>`
+    <div class="stat-card"><div class="stat-val">${s.val}</div><div class="stat-lbl">${s.lbl}</div></div>`).join('');
+
+  const recent = [...db.blogs].reverse().slice(0,5);
+  document.getElementById('recent-list').innerHTML = recent.length ? recent.map(b=>{
+    const niche = db.niches.find(n=>n.id===b.niche);
+    return `<div class="recent-item">
+      <img src="${b.image}" alt=""/>
+      <div class="recent-item-info">
+        <div class="recent-item-title">${b.title}</div>
+        <div class="recent-item-meta">${niche?.icon||''} ${niche?.name||b.niche} · ${b.date}</div>
+      </div>
+      <div class="recent-item-actions">
+        <button class="btn btn-ghost" style="padding:.3rem .7rem;font-size:.78rem" onclick="editBlog('${b.id}')">Edit</button>
+        <a href="../blog.html?slug=${b.slug}" target="_blank" class="btn btn-ghost" style="padding:.3rem .7rem;font-size:.78rem">View</a>
+      </div>
+    </div>`;
+  }).join('') : '<p style="color:var(--muted);padding:1rem 0">No articles yet. <button onclick="showView(\'new\')" style="background:none;border:none;color:var(--accent);cursor:pointer;font-family:var(--font-body)">Add your first blog →</button></p>';
+}
+
+function renderBlogsTable(){
+  const db = getDB();
+  document.getElementById('blogs-count').textContent = db.blogs.length + ' articles total';
+  document.getElementById('blogs-tbody').innerHTML = [...db.blogs].reverse().map(b=>{
+    const niche = db.niches.find(n=>n.id===b.niche);
+    return `<tr>
+      <td><img src="${b.image}" alt=""/></td>
+      <td class="t-title"><strong>${b.title}</strong><span>/${b.slug}</span></td>
+      <td><span class="badge b-${b.niche}">${niche?.icon||''} ${niche?.name||b.niche}</span></td>
+      <td style="color:var(--muted);white-space:nowrap">${b.date}</td>
+      <td><div class="actions">
+        <button class="btn btn-ghost" style="padding:.3rem .7rem;font-size:.78rem" onclick="editBlog('${b.id}')">✏️ Edit</button>
+        <a href="../blog.html?slug=${b.slug}" target="_blank" class="btn btn-ghost" style="padding:.3rem .7rem;font-size:.78rem">👁 View</a>
+        <button class="btn btn-danger" style="padding:.3rem .7rem;font-size:.78rem" onclick="confirmDelete('${b.id}','${b.title.replace(/'/g,"\\'")}')">🗑</button>
+      </div></td>
+    </tr>`;
+  }).join('') || '<tr><td colspan="5" style="text-align:center;color:var(--muted);padding:3rem">No articles yet</td></tr>';
+}
+
+function renderNichesView(){
+  const db = getDB();
+  document.getElementById('niches-cards').innerHTML = db.niches.map(n=>{
+    const count = db.blogs.filter(b=>b.niche===n.id).length;
+    return `<div class="niche-manage-card">
+      <div class="niche-manage-header">
+        <span class="niche-manage-icon">${n.icon}</span>
+        <div><div class="niche-manage-name">${n.name}</div><div class="niche-manage-count">${count} article${count!==1?'s':''}</div></div>
+      </div>
+      <p class="niche-manage-desc">${n.description}</p>
+      <a href="../niche.html?id=${n.id}" target="_blank" class="btn btn-ghost" style="font-size:.8rem">View Page ↗</a>
+    </div>`;
+  }).join('');
+}
+
+function loadSettings(){
+  const db = getDB();
+  document.getElementById('s-name').value = db.site.name || '';
+  document.getElementById('s-tagline').value = db.site.tagline || '';
+  document.getElementById('s-adsense').value = db.site.adsense_id || '';
+  document.getElementById('s-email').value = db.site.email || '';
+}
+
+function saveSettings(){
+  const db = getDB();
+  db.site.name = document.getElementById('s-name').value;
+  db.site.tagline = document.getElementById('s-tagline').value;
+  db.site.adsense_id = document.getElementById('s-adsense').value;
+  db.site.email = document.getElementById('s-email').value;
+  saveDB(db);
+  toast('✅ Settings saved!');
+}
+
+function populateNicheSelect(){
+  const db = getDB();
+  const sel = document.getElementById('f-niche');
+  sel.innerHTML = '<option value="">— Select Niche —</option>';
+  db.niches.forEach(n => { sel.innerHTML += `<option value="${n.id}">${n.icon} ${n.name}</option>`; });
+}
+
+function autoSlug(){
+  if(editingId) return;
+  const v = document.getElementById('f-title').value;
+  document.getElementById('f-slug').value = v.toLowerCase().replace(/[^a-z0-9\s-]/g,'').replace(/\s+/g,'-').replace(/-+/g,'-').slice(0,60);
+}
+
+function previewImg(){
+  const url = document.getElementById('f-image').value;
+  const img = document.getElementById('img-preview');
+  img.src = url; img.style.display = url ? 'block' : 'none';
+}
+
+function wrap(tag){
+  const ta = document.getElementById('content-editor');
+  const sel = ta.value.substring(ta.selectionStart, ta.selectionEnd) || 'Your text here';
+  insertAtCursor(ta, `<${tag}>${sel}</${tag}>\n`);
+  updatePreview();
+}
+
+function insertSnippet(html){
+  const ta = document.getElementById('content-editor');
+  insertAtCursor(ta, html.replace(/&lt;/g,'<').replace(/&gt;/g,'>') + '\n');
+  updatePreview();
+}
+
+function insertAtCursor(ta, text){
+  const s = ta.selectionStart;
+  ta.value = ta.value.slice(0,s) + text + ta.value.slice(ta.selectionEnd);
+  ta.selectionStart = ta.selectionEnd = s + text.length;
+  ta.focus();
+}
+
+function togglePreview(){
+  const p = document.getElementById('preview-panel');
+  p.style.display = p.style.display === 'none' ? 'block' : 'none';
+  updatePreview();
+}
+
+function updatePreview(){
+  document.getElementById('preview-body').innerHTML = document.getElementById('content-editor').value;
+}
+
+function resetForm(){
+  editingId = null;
+  document.getElementById('edit-id').value = '';
+  document.getElementById('form-heading').textContent = 'New Blog Post';
+  ['f-title','f-slug','f-meta','f-image','f-tags','content-editor'].forEach(id => document.getElementById(id).value = '');
+  document.getElementById('f-author').value = 'Admin';
+  document.getElementById('f-date').value = new Date().toISOString().split('T')[0];
+  document.getElementById('f-readtime').value = '';
+  document.getElementById('f-niche').value = '';
+  document.getElementById('img-preview').style.display = 'none';
+  document.getElementById('preview-panel').style.display = 'none';
+  document.getElementById('meta-chars').textContent = '0 / 155';
+}
+
+function editBlog(id){
+  const db = getDB();
+  const blog = db.blogs.find(b=>b.id===id);
+  if(!blog) return;
+  editingId = id;
+  document.getElementById('form-heading').textContent = 'Edit Blog Post';
+  document.getElementById('edit-id').value = id;
+  document.getElementById('f-title').value = blog.title;
+  document.getElementById('f-slug').value = blog.slug;
+  document.getElementById('f-niche').value = blog.niche;
+  document.getElementById('f-author').value = blog.author;
+  document.getElementById('f-date').value = blog.date;
+  document.getElementById('f-readtime').value = blog.read_time;
+  document.getElementById('f-meta').value = blog.meta_description;
+  document.getElementById('meta-chars').textContent = blog.meta_description.length + ' / 155';
+  document.getElementById('f-image').value = blog.image;
+  document.getElementById('f-tags').value = blog.tags.join(', ');
+  document.getElementById('content-editor').value = blog.content;
+  previewImg();
+  showView('new');
+}
+
+function saveBlog(){
+  const title   = document.getElementById('f-title').value.trim();
+  const niche   = document.getElementById('f-niche').value;
+  const slug    = document.getElementById('f-slug').value.trim();
+  const meta    = document.getElementById('f-meta').value.trim();
+  const image   = document.getElementById('f-image').value.trim();
+  const content = document.getElementById('content-editor').value.trim();
+  if(!title||!niche||!slug||!meta||!image||!content){
+    toast('⚠️ Please fill all required fields', 'var(--danger)'); return;
+  }
+  const db = getDB();
+  const blog = {
+    id: editingId || 'blog-'+Date.now(), niche, title, slug,
+    meta_description: meta, image,
+    author: document.getElementById('f-author').value || 'Admin',
+    date: document.getElementById('f-date').value,
+    read_time: document.getElementById('f-readtime').value || '5 min',
+    tags: document.getElementById('f-tags').value.split(',').map(t=>t.trim()).filter(Boolean),
+    content
+  };
+  if(editingId){
+    const idx = db.blogs.findIndex(b=>b.id===editingId);
+    db.blogs[idx] = blog;
+  } else {
+    db.blogs.push(blog);
+  }
+  saveDB(db);
+  renderDashboard();
+  renderBlogsTable();
+  toast(editingId ? '✅ Blog updated!' : '✅ Blog published!');
+  editingId = null;
+  showView('blogs');
+}
+
+function confirmDelete(id, title){
+  document.getElementById('dialog-title').textContent = 'Delete Article?';
+  document.getElementById('dialog-msg').textContent = '"'+title+'" will be permanently deleted.';
+  document.getElementById('dialog-confirm-btn').onclick = () => { deleteBlog(id); closeDialog(); };
+  document.getElementById('confirm-overlay').classList.add('show');
+}
+
+function deleteBlog(id){
+  const db = getDB();
+  db.blogs = db.blogs.filter(b=>b.id!==id);
+  saveDB(db);
+  renderDashboard();
+  renderBlogsTable();
+  toast('🗑 Article deleted');
+}
+
+function confirmReset(){
+  document.getElementById('dialog-title').textContent = 'Reset All Data?';
+  document.getElementById('dialog-msg').textContent = 'This will delete all blogs and reset to defaults. Cannot be undone.';
+  document.getElementById('dialog-confirm-btn').onclick = () => { localStorage.removeItem('nichepulse_db'); closeDialog(); location.reload(); };
+  document.getElementById('confirm-overlay').classList.add('show');
+}
+
+function closeDialog(){
+  document.getElementById('confirm-overlay').classList.remove('show');
+}
+
+function toast(msg, bg){
+  const el = document.getElementById('toast');
+  el.textContent = msg;
+  el.style.background = bg || 'var(--success)';
+  el.classList.add('show');
+  setTimeout(()=>el.classList.remove('show'), 3000);
+}
+
+init();
+</script>
+</body>
+</html>
+```
+
+---
+
+# `robots.txt` — place in root
+```
+User-agent: *
+Allow: /
+Disallow: /admin/
+
+Sitemap: https://nichepulse.com/sitemap.xml
