@@ -6,51 +6,45 @@
   <title>About Us – NichePulse</title>
   <meta name="description" content="About NichePulse — your trusted source for expert articles on Finance, Health, Legal, Technology and Real Estate."/>
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
   <link rel="stylesheet" href="css/style.css"/>
   <style>
-    .about-wrap { max-width: 780px; margin: 0 auto; padding: 4rem 2rem; }
-    .about-wrap h1 { font-family: var(--font-head); font-size: 2.4rem; margin-bottom: 1rem; }
-    .about-wrap h2 { font-family: var(--font-head); font-size: 1.3rem; margin: 2rem 0 0.75rem; }
-    .about-wrap p { color: #ccc8c0; line-height: 1.85; margin-bottom: 1.1rem; font-size: 0.97rem; }
-    .about-wrap ul { margin: 0.5rem 0 1.1rem 1.5rem; }
-    .about-wrap li { color: #ccc8c0; margin-bottom: 0.4rem; line-height: 1.7; }
-    .niches-pills { display: flex; flex-wrap: wrap; gap: 0.6rem; margin: 1rem 0 2rem; }
-    .niche-pill { background: var(--card); border: 1px solid var(--border); border-radius: 50px; padding: 0.4rem 1rem; font-size: 0.88rem; color: var(--text); }
-    .disclaimer { background: var(--card); border: 1px solid var(--border); border-left: 3px solid var(--accent); border-radius: var(--radius); padding: 1.2rem 1.5rem; margin-top: 2rem; font-size: 0.88rem; color: var(--muted); }
+    .about-wrap{max-width:780px;margin:0 auto;padding:4rem 2rem}
+    .about-wrap h1{font-family:var(--font-head);font-size:2.4rem;margin-bottom:1rem}
+    .about-wrap h2{font-family:var(--font-head);font-size:1.3rem;margin:2rem 0 .75rem}
+    .about-wrap p{color:#ccc8c0;line-height:1.85;margin-bottom:1.1rem;font-size:.97rem}
+    .about-wrap ul{margin:.5rem 0 1.1rem 1.5rem}
+    .about-wrap li{color:#ccc8c0;margin-bottom:.4rem;line-height:1.7}
+    .pills{display:flex;flex-wrap:wrap;gap:.6rem;margin:1rem 0 2rem}
+    .pill{background:var(--card);border:1px solid var(--border);border-radius:50px;padding:.4rem 1rem;font-size:.88rem}
+    .disclaimer{background:var(--card);border:1px solid var(--border);border-left:3px solid var(--accent);border-radius:var(--radius);padding:1.2rem 1.5rem;margin-top:2rem;font-size:.88rem;color:var(--muted)}
   </style>
 </head>
 <body>
-
   <header class="header">
     <div class="header-inner">
-      <a href="index.html" class="logo">
-        <span class="logo-mark">◈</span>
-        <span class="logo-text">NichePulse</span>
-      </a>
-      <nav class="nav">
+      <a href="index.html" class="logo"><span class="logo-mark">◈</span><span class="logo-text">NichePulse</span></a>
+      <nav class="nav" id="nav">
         <a href="index.html" class="nav-link">Home</a>
-        <a href="index.html#niches" class="nav-link">Niches</a>
-        <a href="index.html#latest" class="nav-link">Articles</a>
+        <a href="about.html" class="nav-link active">About</a>
+        <a href="contact.html" class="nav-link">Contact</a>
       </nav>
+      <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
     </div>
   </header>
 
   <div class="about-wrap">
     <h1>About NichePulse</h1>
     <p>NichePulse is a multi-niche blog dedicated to publishing clear, accurate, and actionable articles across the topics that matter most in everyday life — Finance, Health, Legal, Technology, and Real Estate.</p>
-
-    <p>Our mission is simple: take complex, often confusing topics and break them down into guides that anyone can read and act on. Whether you're trying to build an emergency fund, understand your legal rights after an accident, or improve your sleep quality — we've got you covered.</p>
-
+    <p>Our mission is simple: take complex, often confusing topics and break them down into guides that anyone can read and act on.</p>
     <h2>What We Cover</h2>
-    <div class="niches-pills">
-      <span class="niche-pill">💰 Finance & Money</span>
-      <span class="niche-pill">🏥 Health & Wellness</span>
-      <span class="niche-pill">⚖️ Legal & Law</span>
-      <span class="niche-pill">💻 Technology & AI</span>
-      <span class="niche-pill">🏠 Real Estate</span>
+    <div class="pills">
+      <span class="pill">💰 Finance & Money</span>
+      <span class="pill">🏥 Health & Wellness</span>
+      <span class="pill">⚖️ Legal & Law</span>
+      <span class="pill">💻 Technology & AI</span>
+      <span class="pill">🏠 Real Estate</span>
     </div>
-
     <h2>Our Editorial Standards</h2>
     <p>Every article on NichePulse is written to be:</p>
     <ul>
@@ -59,12 +53,8 @@
       <li><strong>Readable</strong> — written in plain English, not jargon</li>
       <li><strong>Up to date</strong> — we review and update articles regularly</li>
     </ul>
-
-    <h2>Who Is This For?</h2>
-    <p>NichePulse is for everyday people making real decisions — about money, health, legal matters, and more. We believe access to good information shouldn't require a lawyer, a financial advisor, or a doctor's appointment.</p>
-
     <div class="disclaimer">
-      <strong>Disclaimer:</strong> The content on NichePulse is for informational and educational purposes only. It does not constitute professional financial, legal, or medical advice. Always consult a qualified professional before making major financial, health, or legal decisions.
+      <strong>Disclaimer:</strong> The content on NichePulse is for informational and educational purposes only. It does not constitute professional financial, legal, or medical advice. Always consult a qualified professional before making major decisions.
     </div>
   </div>
 
@@ -75,6 +65,9 @@
       </div>
     </div>
   </footer>
-  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+    document.getElementById('hamburger').addEventListener('click', () => document.getElementById('nav').classList.toggle('open'));
+  </script>
 </body>
 </html>
