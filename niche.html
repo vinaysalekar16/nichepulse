@@ -9,21 +9,19 @@
   <link rel="preconnect" href="https://fonts.googleapis.com"/>
   <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
   <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script> -->
-  <link rel="stylesheet" href="../css/style.css"/>
+  <link rel="stylesheet" href="css/style.css"/>
 </head>
 <body>
 
-  <header class="header" id="header">
+  <header class="header">
     <div class="header-inner">
-      <a href="../index.html" class="logo">
-        <span class="logo-mark">◈</span>
-        <span class="logo-text">NichePulse</span>
+      <a href="index.html" class="logo">
+        <span class="logo-mark">◈</span><span class="logo-text">NichePulse</span>
       </a>
       <nav class="nav" id="nav">
-        <a href="../index.html" class="nav-link">Home</a>
-        <a href="../index.html#niches" class="nav-link">Niches</a>
-        <a href="../index.html#latest" class="nav-link">Articles</a>
-        <a href="../admin/index.html" class="nav-link nav-admin">Admin ↗</a>
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="about.html" class="nav-link">About</a>
+        <a href="contact.html" class="nav-link">Contact</a>
       </nav>
       <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
     </div>
@@ -31,7 +29,7 @@
 
   <section class="niche-hero" id="niche-hero">
     <div class="container">
-      <a href="../index.html#niches" class="breadcrumb">← All Niches</a>
+      <a href="index.html#niches" class="breadcrumb">← All Niches</a>
       <div class="niche-hero-icon" id="niche-icon"></div>
       <h1 id="niche-name" class="niche-hero-title"></h1>
       <p id="niche-desc" class="niche-hero-desc"></p>
@@ -40,7 +38,7 @@
 
   <div class="ad-container">
     <div class="ad-label">Advertisement</div>
-    <div class="ad-placeholder">📢 Ad Space</div>
+    <div class="ad-placeholder">Ad Space</div>
   </div>
 
   <section class="section">
@@ -49,59 +47,57 @@
         <h2 class="section-title" id="articles-heading">Articles</h2>
       </div>
       <div class="blogs-grid" id="niche-blogs-grid"></div>
-      <div id="no-posts" style="display:none;" class="empty-state">
-        <p>No articles yet in this niche. <a href="../admin/index.html">Add the first one →</a></p>
+      <div id="no-posts" style="display:none" class="empty-state">
+        <p>No articles yet in this niche. <a href="admin/index.html">Add the first one →</a></p>
       </div>
     </div>
   </section>
 
   <div class="ad-container">
     <div class="ad-label">Advertisement</div>
-    <div class="ad-placeholder">📢 Ad Space</div>
+    <div class="ad-placeholder">Ad Space</div>
   </div>
 
   <footer class="footer">
     <div class="container">
       <div class="footer-bottom">
-        <p>© <span id="year"></span> NichePulse. All rights reserved.</p>
+        <p>© <span id="year"></span> NichePulse. All rights reserved. | <a href="privacy-policy.html" style="color:var(--muted)">Privacy Policy</a></p>
       </div>
     </div>
   </footer>
 
-  <script src="../js/db.js"></script>
+  <script src="js/db.js"></script>
   <script>
     document.getElementById('year').textContent = new Date().getFullYear();
+    document.getElementById('hamburger').addEventListener('click', () => document.getElementById('nav').classList.toggle('open'));
     const params = new URLSearchParams(window.location.search);
     const nicheId = params.get('id');
     const niche = DB.niches.find(n => n.id === nicheId);
-
-    if (!niche) { window.location.href = '../index.html'; }
+    if (!niche) { window.location.href = 'index.html'; }
     else {
       document.getElementById('page-title').textContent = niche.name + ' Articles – NichePulse';
-      document.getElementById('page-desc').content = niche.description;
-      document.getElementById('page-keywords').content = niche.keywords;
+      document.getElementById('page-desc').setAttribute('content', niche.description);
+      document.getElementById('page-keywords').setAttribute('content', niche.keywords);
       document.getElementById('niche-icon').textContent = niche.icon;
       document.getElementById('niche-name').textContent = niche.name;
       document.getElementById('niche-desc').textContent = niche.description;
       document.getElementById('articles-heading').textContent = niche.name + ' Articles';
       document.getElementById('niche-hero').style.setProperty('--niche-color', niche.color);
-
       const blogs = DB.blogs.filter(b => b.niche === nicheId);
       const grid = document.getElementById('niche-blogs-grid');
-
       if (blogs.length === 0) {
         document.getElementById('no-posts').style.display = 'block';
       } else {
         blogs.forEach((blog, i) => {
           grid.innerHTML += `
             <article class="blog-card" style="--delay:${i*0.1}s">
-              <a href="../blog.html?slug=${blog.slug}" class="card-img-wrap">
+              <a href="blog.html?slug=${blog.slug}" class="card-img-wrap">
                 <img src="${blog.image}" alt="${blog.title}" loading="lazy"/>
                 <span class="card-niche-tag" style="background:${niche.color}">${niche.icon} ${niche.name}</span>
               </a>
               <div class="card-body">
                 <div class="card-meta"><span>${blog.date}</span><span>${blog.read_time} read</span></div>
-                <h3><a href="../blog.html?slug=${blog.slug}">${blog.title}</a></h3>
+                <h3><a href="blog.html?slug=${blog.slug}">${blog.title}</a></h3>
                 <p>${blog.meta_description}</p>
                 <div class="card-tags">${blog.tags.map(t=>`<span class="tag">${t}</span>`).join('')}</div>
               </div>
