@@ -7,7 +7,7 @@
  * Generate your own hash at: https://emn178.github.io/online-tools/sha256.html
  */
 
-const ADMIN_HASH = '2b054f005f33e893105480c338ba67c8f51b181bd66abfebebc3a3381cc549e3'; // SHA-256 of: nichepulse2026  ← CHANGE THIS
+const ADMIN_HASH = '921b587fa9d65a7581dc4a755fbdfd15de56eacceaaf6885c9703fb4ebb9ac52'; // SHA-256 of: nichepulse2026  ← CHANGE THIS
 
 // Lightweight SHA-256 (no external dependency needed)
 async function sha256(message) {
