@@ -1,0 +1,200 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title id="page-title">Article – NichePulse</title>
+  <meta name="description" id="page-desc" content=""/>
+  <meta name="keywords" id="page-keywords" content=""/>
+  <!-- Open Graph for social sharing -->
+  <meta property="og:title" id="og-title" content=""/>
+  <meta property="og:description" id="og-desc" content=""/>
+  <meta property="og:image" id="og-image" content=""/>
+  <meta property="og:type" content="article"/>
+  <!-- Schema.org Article structured data for Google -->
+  <script type="application/ld+json" id="schema-data"></script>
+
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,400;0,700;0,900;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <!-- <script async src="https://pagead2.googlesyndication.com/pagead/js/adsbygoogle.js?client=ca-pub-XXXXXXXXXXXXXXXX" crossorigin="anonymous"></script> -->
+  <link rel="stylesheet" href="css/style.css"/>
+</head>
+<body>
+
+  <header class="header" id="header">
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-mark">◈</span>
+        <span class="logo-text">NichePulse</span>
+      </a>
+      <nav class="nav" id="nav">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="index.html#niches" class="nav-link">Niches</a>
+        <a href="index.html#latest" class="nav-link">Articles</a>
+        <a href="admin/index.html" class="nav-link nav-admin">Admin ↗</a>
+      </nav>
+      <button class="hamburger" id="hamburger"><span></span><span></span><span></span></button>
+    </div>
+    <!-- Reading progress bar -->
+    <div class="progress-bar" id="progress-bar"></div>
+  </header>
+
+  <main class="post-page" id="post-page">
+    <div class="post-container">
+
+      <!-- ── POST MAIN ── -->
+      <article class="post-main" id="post-main">
+        <div class="post-breadcrumb" id="post-breadcrumb"></div>
+
+        <header class="post-header">
+          <div class="post-meta-top" id="post-meta-top"></div>
+          <h1 class="post-title" id="post-title"></h1>
+          <p class="post-deck" id="post-deck"></p>
+          <div class="post-byline" id="post-byline"></div>
+        </header>
+
+        <div class="post-hero-img" id="post-hero-img"></div>
+
+        <!-- Top in-article ad -->
+        <div class="ad-container ad-inline">
+          <div class="ad-label">Advertisement</div>
+          <div class="ad-placeholder">📢 In-Article Ad</div>
+        </div>
+
+        <div class="post-body" id="post-body"></div>
+
+        <!-- Bottom in-article ad -->
+        <div class="ad-container ad-inline">
+          <div class="ad-label">Advertisement</div>
+          <div class="ad-placeholder">📢 In-Article Ad</div>
+        </div>
+
+        <div class="post-tags" id="post-tags"></div>
+        <div class="post-share" id="post-share"></div>
+      </article>
+
+      <!-- ── SIDEBAR ── -->
+      <aside class="post-sidebar">
+        <div class="sidebar-sticky">
+          <div class="sidebar-widget">
+            <h3>About NichePulse</h3>
+            <p>Expert insights across Finance, Health, Legal, Technology and Real Estate. Making complex topics simple.</p>
+          </div>
+          <!-- Sidebar Ad -->
+          <div class="ad-container ad-sidebar">
+            <div class="ad-label">Advertisement</div>
+            <div class="ad-placeholder">📢 Sidebar Ad</div>
+          </div>
+          <div class="sidebar-widget" id="related-widget">
+            <h3>Related Articles</h3>
+            <div id="related-posts"></div>
+          </div>
+        </div>
+      </aside>
+
+    </div>
+  </main>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <p>© <span id="year"></span> NichePulse. All rights reserved. Content is for informational purposes only.</p>
+      </div>
+    </div>
+  </footer>
+
+  <script src="js/db.js"></script>
+  <script>
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    const params = new URLSearchParams(window.location.search);
+    const slug = params.get('slug');
+    const blog = DB.blogs.find(b => b.slug === slug);
+
+    if (!blog) { window.location.href = 'index.html'; }
+    else {
+      const niche = DB.niches.find(n => n.id === blog.niche);
+
+      // Meta
+      document.getElementById('page-title').textContent = blog.title + ' | NichePulse';
+      document.getElementById('page-desc').setAttribute('content', blog.meta_description);
+      document.getElementById('page-keywords').setAttribute('content', blog.tags.join(', '));
+      document.getElementById('og-title').setAttribute('content', blog.title);
+      document.getElementById('og-desc').setAttribute('content', blog.meta_description);
+      document.getElementById('og-image').setAttribute('content', blog.image);
+
+      // Schema.org structured data (helps Google rank you)
+      document.getElementById('schema-data').textContent = JSON.stringify({
+        "@context": "https://schema.org",
+        "@type": "Article",
+        "headline": blog.title,
+        "description": blog.meta_description,
+        "image": blog.image,
+        "author": {"@type": "Person", "name": blog.author},
+        "publisher": {"@type": "Organization", "name": "NichePulse"},
+        "datePublished": blog.date,
+        "dateModified": blog.date,
+        "keywords": blog.tags.join(', ')
+      });
+
+      // Breadcrumb
+      document.getElementById('post-breadcrumb').innerHTML = `
+        <a href="index.html">Home</a> › 
+        <a href="niche.html?id=${niche.id}">${niche.name}</a> › 
+        <span>${blog.title}</span>`;
+
+      // Meta top
+      document.getElementById('post-meta-top').innerHTML = `
+        <a href="niche.html?id=${niche.id}" class="niche-badge" style="background:${niche.color}20;color:${niche.color};border:1px solid ${niche.color}40">
+          ${niche.icon} ${niche.name}
+        </a>
+        <span class="read-time">⏱ ${blog.read_time} read</span>`;
+
+      document.getElementById('post-title').textContent = blog.title;
+      document.getElementById('post-deck').textContent = blog.meta_description;
+      document.getElementById('post-byline').innerHTML = `
+        <span>By <strong>${blog.author}</strong></span>
+        <span>·</span>
+        <span>${blog.date}</span>`;
+
+      document.getElementById('post-hero-img').innerHTML = `
+        <img src="${blog.image}" alt="${blog.title}" loading="eager"/>`;
+
+      document.getElementById('post-body').innerHTML = blog.content;
+
+      // Tags
+      document.getElementById('post-tags').innerHTML = `
+        <strong>Tags:</strong> ${blog.tags.map(t=>`<span class="tag">${t}</span>`).join('')}`;
+
+      // Share buttons
+      const url = encodeURIComponent(window.location.href);
+      const title = encodeURIComponent(blog.title);
+      document.getElementById('post-share').innerHTML = `
+        <strong>Share:</strong>
+        <a href="https://twitter.com/intent/tweet?text=${title}&url=${url}" target="_blank" class="share-btn share-twitter">Twitter</a>
+        <a href="https://www.facebook.com/sharer/sharer.php?u=${url}" target="_blank" class="share-btn share-fb">Facebook</a>
+        <a href="https://www.linkedin.com/shareArticle?mini=true&url=${url}&title=${title}" target="_blank" class="share-btn share-li">LinkedIn</a>`;
+
+      // Related posts
+      const related = DB.blogs.filter(b => b.niche === blog.niche && b.slug !== blog.slug).slice(0,3);
+      document.getElementById('related-posts').innerHTML = related.map(r => `
+        <a href="blog.html?slug=${r.slug}" class="related-item">
+          <img src="${r.image}" alt="${r.title}"/>
+          <div>
+            <p>${r.title}</p>
+            <span>${r.read_time} read</span>
+          </div>
+        </a>`).join('') || '<p style="color:#aaa;font-size:0.85rem">No related articles yet.</p>';
+
+      // Reading progress bar
+      window.addEventListener('scroll', () => {
+        const body = document.getElementById('post-main');
+        const winScroll = document.documentElement.scrollTop;
+        const height = body.offsetHeight - window.innerHeight;
+        const pct = Math.min((winScroll / height) * 100, 100);
+        document.getElementById('progress-bar').style.width = pct + '%';
+      });
+    }
+  </script>
+</body>
+</html>
