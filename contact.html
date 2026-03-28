@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Contact Us – NichePulse</title>
+  <meta name="description" content="Get in touch with NichePulse. We'd love to hear from you."/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,wght@0,700;0,900&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <style>
+    .contact-wrap { max-width: 640px; margin: 0 auto; padding: 4rem 2rem; }
+    .contact-wrap h1 { font-family: var(--font-head); font-size: 2.4rem; margin-bottom: 0.75rem; }
+    .contact-wrap p { color: #ccc8c0; line-height: 1.85; margin-bottom: 1.5rem; }
+    .contact-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 2rem; margin-top: 2rem; }
+    .contact-card h2 { font-family: var(--font-head); font-size: 1.1rem; margin-bottom: 1.2rem; }
+    .contact-row { display: flex; align-items: center; gap: 1rem; padding: 0.9rem 0; border-bottom: 1px solid var(--border); }
+    .contact-row:last-child { border: none; }
+    .contact-icon { font-size: 1.4rem; flex-shrink: 0; }
+    .contact-label { font-size: 0.75rem; color: var(--muted); text-transform: uppercase; letter-spacing: 0.08em; }
+    .contact-value { font-size: 0.95rem; color: var(--text); }
+    .contact-value a { color: var(--accent); }
+  </style>
+</head>
+<body>
+
+  <header class="header">
+    <div class="header-inner">
+      <a href="index.html" class="logo">
+        <span class="logo-mark">◈</span>
+        <span class="logo-text">NichePulse</span>
+      </a>
+      <nav class="nav">
+        <a href="index.html" class="nav-link">Home</a>
+        <a href="index.html#niches" class="nav-link">Niches</a>
+        <a href="index.html#latest" class="nav-link">Articles</a>
+      </nav>
+    </div>
+  </header>
+
+  <div class="contact-wrap">
+    <h1>Contact Us</h1>
+    <p>Have a question, suggestion, or want to contribute an article? We'd love to hear from you. Reach out using the details below.</p>
+
+    <div class="contact-card">
+      <h2>Get in Touch</h2>
+      <div class="contact-row">
+        <div class="contact-icon">📧</div>
+        <div>
+          <div class="contact-label">Email</div>
+          <div class="contact-value"><a href="mailto:contact@nichepulse.com">contact@nichepulse.com</a></div>
+        </div>
+      </div>
+      <div class="contact-row">
+        <div class="contact-icon">🌐</div>
+        <div>
+          <div class="contact-label">Website</div>
+          <div class="contact-value"><a href="index.html">nichepulse.com</a></div>
+        </div>
+      </div>
+      <div class="contact-row">
+        <div class="contact-icon">⏱</div>
+        <div>
+          <div class="contact-label">Response Time</div>
+          <div class="contact-value">Within 2–3 business days</div>
+        </div>
+      </div>
+    </div>
+
+    <p style="margin-top:2rem;font-size:0.88rem;color:var(--muted)">
+      <strong style="color:var(--text)">Note:</strong> We do not provide personalized legal, financial, or medical advice. For professional guidance, please consult a qualified expert in the relevant field.
+    </p>
+  </div>
+
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <p>© <span id="year"></span> NichePulse. All rights reserved. | <a href="privacy-policy.html" style="color:var(--muted)">Privacy Policy</a> | <a href="about.html" style="color:var(--muted)">About</a> | <a href="contact.html" style="color:var(--muted)">Contact</a></p>
+      </div>
+    </div>
+  </footer>
+  <script>document.getElementById('year').textContent = new Date().getFullYear();</script>
+</body>
+</html>
