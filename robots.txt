@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 Disallow: /admin/
 
-Sitemap: https://yoursite.com/sitemap.xml
+Sitemap: https://nichepulse.com/sitemap.xml
